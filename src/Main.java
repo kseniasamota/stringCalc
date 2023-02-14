@@ -21,7 +21,12 @@ public class Main {
         int secondNumber;
         Character currentSign = ' ';
         int isCorrectSign = 0;
-        String[] component = new String[0];
+        String[] component = input.split(" ");
+
+        if(component.length > 3 || component.length <= 1)
+            throw new IOException("Cтрока не является математической операцией");
+
+
 
         for(int i = 0; i < charInput.length; i++){
             if(charInput[i] == '+' || charInput[i] == '-' || charInput[i] == '*' || charInput[i] == '/'){
@@ -73,6 +78,8 @@ public class Main {
             } else {
                 throw new IOException("Числа не находятся в диапазоне от 1 до 10!");
             }
+        } else {
+            throw new IOException("используются одновременно разные системы счисления");
         }
 
         return answer;
