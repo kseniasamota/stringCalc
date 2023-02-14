@@ -50,7 +50,7 @@ public class Main {
         }
 
 
-        if(converter.isRoman(component[0]) && converter.isRoman(component[1])){
+        if(converter.isRoman(component[0]) == converter.isRoman(component[1])){
             firstNumber = Integer.parseInt(component[0]);
             secondNumber = Integer.parseInt(component[1]);
 
@@ -78,6 +78,8 @@ public class Main {
             } else {
                 throw new IOException("Числа не находятся в диапазоне от 1 до 10!");
             }
+        } else if (!converter.isRoman(component[0]) == !converter.isRoman(component[1])) {
+
         } else {
             throw new IOException("используются одновременно разные системы счисления");
         }
@@ -112,5 +114,40 @@ class Converter{
         } else {
             return true;
         }
+    }
+
+    private int romanToArabic(String roman) {
+        int result = 0;
+        int prevValue = 0;
+
+        for (int i = roman.length() - 1; i >= 0; i--) {
+            int currentValue = romanMap.get(roman.charAt(i));
+
+            if (currentValue < prevValue) {
+                result -= currentValue;
+            } else {
+                result += currentValue;
+            }
+
+            prevValue = currentValue;
+        }
+
+        return result;
+    }
+
+    public String arabicToRoman(int arabic){
+        String[] romanSymbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        int[] arabicValues = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+
+        StringBuilder roman = new StringBuilder();
+
+        for (int i = 0; i < arabicValues.length; i++) {
+            while (arabic >= arabicValues[i]) {
+                roman.append(romanSymbols[i]);
+                arabic -= arabicValues[i];
+            }
+        }
+
+        return roman.toString();
     }
 }
