@@ -49,8 +49,7 @@ public class Main {
             component = input.split(" / ");
         }
 
-
-        if(converter.isRoman(component[0]) == converter.isRoman(component[1])){
+        if(!converter.isRoman(component[0]) && !converter.isRoman(component[1])){
             firstNumber = Integer.parseInt(component[0]);
             secondNumber = Integer.parseInt(component[1]);
 
@@ -79,7 +78,33 @@ public class Main {
                 throw new IOException("Числа не находятся в диапазоне от 1 до 10!");
             }
         } else if (!converter.isRoman(component[0]) == !converter.isRoman(component[1])) {
+            firstNumber = converter.romanToArabic(component[0]);
+            secondNumber = converter.romanToArabic(component[1]);
 
+            if(inArrange(firstNumber) && inArrange(secondNumber)){
+                switch (currentSign) {
+                    case ('+') -> {
+                        return Integer.toString(firstNumber + secondNumber);
+                    }
+                    case ('-') -> {
+                        return Integer.toString(firstNumber - secondNumber);
+                    }
+                    case ('*') -> {
+                        return Integer.toString(firstNumber * secondNumber);
+                    }
+                    case ('/') -> {
+                        try {
+                            return Integer.toString(firstNumber / secondNumber);
+                        } catch (ArithmeticException | InputMismatchException e) {
+                            System.err.println("Exception : " + e);
+                            System.err.println("Результатом операции могут быть только целые числа!");
+                        }
+                    }
+                    default -> throw new IllegalArgumentException("Неверный знак операции");
+                }
+            } else {
+                throw new IOException("Числа не находятся в диапазоне от 1 до 10!");
+            }
         } else {
             throw new IOException("используются одновременно разные системы счисления");
         }
@@ -110,13 +135,13 @@ class Converter{
 
     public boolean isRoman(String number){
         if(romanMap.containsKey(number.charAt(0))){
-            return false;
-        } else {
             return true;
+        } else {
+            return false;
         }
     }
 
-    private int romanToArabic(String roman) {
+    public int romanToArabic(String roman) {
         int result = 0;
         int prevValue = 0;
 
